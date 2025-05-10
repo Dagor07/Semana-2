@@ -1,5 +1,7 @@
+# Inventory is a list of dictionaries. Each product is stored as: {'ProductName': (price, quantity)}
 inventory = []
 
+# Gets a positive float from user
 def num_positive(prompt):
     while True:
         try:
@@ -7,10 +9,11 @@ def num_positive(prompt):
             if number > 0:
                 return number
             else:
-                print("The number is not positive")
+                print("The number is not positive.")
         except ValueError:
-            print("the number is invalid")
+            print("Invalid number.")
 
+# Gets a positive integer from user
 def num_integer_positive(prompt):
     while True:
         try:
@@ -18,92 +21,92 @@ def num_integer_positive(prompt):
             if number > 0:
                 return number
             else:
-                print("The number is not positive")
+                print("The number is not positive.")
         except ValueError:
-            print("the number is invalid")
+            print("Invalid number.")
 
+# Adds a new product to the inventory
 def add_product():
-    product_name = input("Product: ")
-    price = num_positive("Price: ")
-    Quantuty = num_integer_positive("Quantity available: ")
-    product = {
-        'Name': product_name,
-        'Price': price,
-        'quantity available': Quantuty
-    }
-    inventory.append(product)
-    print("product added:", product)
-
-def get_product():
-    name= input("Name of the product to be updated: ")
-    price = num_positive("New price: ")
-    product = {
-        'Name': name,
-        'Price': price
-    }
-    return product
-
-def consult_product():
-    if not inventory:
-        print("The inventory is empty")
-    else:
-        print("Consult product")
-        for product in inventory:
-            print(product)
-
-def update_price():
-    update_product = get_product()
-    found = False
+    product_name = input("Product name: ")
+    # Check if the product already exists
     for product in inventory:
-        if product['Name'] == update_product['Name']:
-            product['Price'] = update_product['Price']
-            found = True
-            print("Price update:", product)
-            break
-    if not found:
-        print("This function is not in the inventory")
-
-def eliminar_productos():
-    nombre_producto = input("Producto a eliminar: ")
-    for producto in inventory:
-        if producto['Nombre'] == nombre_producto:
-            inventory.remove(producto)
-            print("Producto eliminado")
+        if product_name in product:
+            print("Product already exists.")
             return
-    print("Producto no encontrado")
+    price = num_positive("Price: ")
+    quantity = num_integer_positive("Available quantity: ")
+    inventory.append({product_name: (price, quantity)})
+    print(f"Product added: {product_name} - Price: ${price:.2f}, Quantity: {quantity}")
 
-def calcular_valor_total_inventario():
+# Searches for a product by name
+def search_product_by_name():
+    name = input("Enter product name to search: ")
+    for product in inventory:
+        if name in product:
+            price, quantity = product[name]
+            print(f"Found: {name} - Price: ${price:.2f}, Quantity: {quantity}")
+            return
+    print("Product not found.")
+
+# Updates the price of an existing product
+def update_price():
+    name = input("Enter product name to update price: ")
+    for product in inventory:
+        if name in product:
+            new_price = num_positive("New price: ")
+            _, quantity = product[name]
+            # Replace the old tuple with a new one (tuples are immutable)
+            product[name] = (new_price, quantity)
+            print(f"Updated: {name} - New Price: ${new_price:.2f}, Quantity: {quantity}")
+            return
+    print("Product not found.")
+
+# Deletes a product by name
+def delete_product():
+    name = input("Enter product name to delete: ")
+    for product in inventory:
+        if name in product:
+            inventory.remove(product)
+            print("Product deleted.")
+            return
+    print("Product not found.")
+
+# Calculates the total value of all products in inventory
+def calculate_total_inventory_value():
     total = 0
-    for producto in inventory:
-        total += producto['Precio'] * producto['Cantidad Disponible']
-    print(f"Valor total del inventario: ${total:.2f}")
+    for product in inventory:
+        for price, quantity in product.values():
+            total += price * quantity
+    print(f"Total inventory value: ${total:.2f}")
 
-def menu_principal():
+# Main menu that controls the program flow
+def main_menu():
     while True:
         print('-----------------------------------------------')
-        print("1. Agregar productos")
-        print("2. Consultar productos")
-        print("3. Actualizar precios")
-        print("4. Eliminar productos")
-        print("5. Valor total del inventario")
-        print("6. Salir")
+        print("1. Add product")
+        print("2. Search product by name")
+        print("3. Update product price")
+        print("4. Delete product")
+        print("5. Calculate total inventory value")
+        print("6. Exit")
         print('-----------------------------------------------')
-        opcion = input('Elige lo que deseas realizar: ')
+        choice = input("Choose an option: ")
         print('-----------------------------------------------')
-        if opcion == '1':
-            agregar_producto()
-        elif opcion == '2':
-            consultar_productos()
-        elif opcion == '3':
-            actualizar_precios()
-        elif opcion == '4':
-            eliminar_productos()
-        elif opcion == '5':
-            calcular_valor_total_inventario()
-        elif opcion == "6":
-            print("Saliendo del programa...")
+        if choice == '1':
+            add_product()
+        elif choice == '2':
+            search_product_by_name()
+        elif choice == '3':
+            update_price()
+        elif choice == '4':
+            delete_product()
+        elif choice == '5':
+            calculate_total_inventory_value()
+        elif choice == '6':
+            print("Exiting program...")
             break
         else:
-            print('Número inválido')
+            print("Invalid option.")
 
-menu_principal()
+# Run the program
+main_menu()
