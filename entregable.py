@@ -1,86 +1,83 @@
-inventory=[]
+inventory = []
 
-def pedir_numero_positivo(prompt):
-    while(True):
+def num_positive(prompt):
+    while True:
         try:
-            numero = float(input(prompt))
-            if numero > 0:
-                return numero
+            number = float(input(prompt))
+            if number > 0:
+                return number
             else:
-                print("El numero no es positivo")
+                print("The number is not positive")
         except ValueError:
-            print("El numero es invalido")
+            print("the number is invalid")
 
-def pedir_numero_entero_positivo(prompt):
-    while(True):
+def num_integer_positive(prompt):
+    while True:
         try:
-            numero = int(input(prompt))
-            if numero > 0:
-                return numero
+            number = int(input(prompt))
+            if number > 0:
+                return number
             else:
-                print("El numero no es positivo")
+                print("The number is not positive")
         except ValueError:
-            print("El numero es invalido")
+            print("the number is invalid")
 
-def agregar_producto():
+def add_product():
+    product_name = input("Product: ")
+    price = num_positive("Price: ")
+    Quantuty = num_integer_positive("Quantity available: ")
+    product = {
+        'Name': product_name,
+        'Price': price,
+        'quantity available': Quantuty
+    }
+    inventory.append(product)
+    print("product added:", product)
 
-    nombre_producto = input("Producto:")
-    precio = pedir_numero_positivo("Precio:  $")
-    cantidad_disponible = (pedir_numero_entero_positivo("Cantidad Disponible:   "))
-    producto = {nombre_producto: (precio,cantidad_disponible)}
-    inventory.append(producto)
-    print(inventory)
+def get_product():
+    name= input("Name of the product to be updated: ")
+    price = num_positive("New price: ")
+    product = {
+        'Name': name,
+        'Price': price
+    }
+    return product
 
-# def obtener_producto():
-    
-    
-#     producto = {
-#             'Nombre':nombre_producto,
-#             'Precio':precio,
-#             'Cantidad Disponible':(cantidad_disponible)
-#     }
-    
-#     return producto
-
-def consultar_productos():
-    if len(inventory) == 0:
-        print("El inventory esta vacio")
+def consult_product():
+    if not inventory:
+        print("The inventory is empty")
     else:
-        print(f"CONSULTAR PRODUCTOS \n{inventory}")
+        print("Consult product")
+        for product in inventory:
+            print(product)
 
-
-
-
-# for product in inventory:
-#     if product["nombre"] == producto_actualizar['Nombre']:
-#         product = producto_actualizar
-
-def actualizar_precios():
-    producto_actualizar = obtener_producto()
-    if len(inventory) == 0:
-        print("El inventory esta vacio")
-    else:
-        for i, producto in enumerate(inventory):
-            if producto['Nombre'] == producto_actualizar['Nombre']:
-                inventory[i] = producto_actualizar
-            else: 
-                print("este producto no esta en el inventory")
+def update_price():
+    update_product = get_product()
+    found = False
+    for product in inventory:
+        if product['Name'] == update_product['Name']:
+            product['Price'] = update_product['Price']
+            found = True
+            print("Price update:", product)
+            break
+    if not found:
+        print("This function is not in the inventory")
 
 def eliminar_productos():
-    nombre_producto=input("Producto a eliminar: ")
+    nombre_producto = input("Producto a eliminar: ")
     for producto in inventory:
         if producto['Nombre'] == nombre_producto:
             inventory.remove(producto)
+            print("Producto eliminado")
+            return
+    print("Producto no encontrado")
 
-def calcular_valor_total_iventario():
+def calcular_valor_total_inventario():
+    total = 0
     for producto in inventory:
-        multiplicacion = lambda inventory:({(inventory[producto]['Precio'])*(inventory[producto]['Cantidad Disponible'])})()
-        
-    # calculadora = 0
-    # for producto in inventory:
-    #     calculadora = calculadora + ((producto['Precio'])*(producto['Cantidad Disponible']))  
-    # print(f"VALOR TOTAL DEL inventory \n${calculadora}")
-    print(inventory)
+        total += producto['Precio'] * producto['Cantidad Disponible']
+    print(f"Valor total del inventario: ${total:.2f}")
+
 def menu_principal():
     while True:
         print('-----------------------------------------------')
@@ -88,32 +85,25 @@ def menu_principal():
         print("2. Consultar productos")
         print("3. Actualizar precios")
         print("4. Eliminar productos")
-        print("5. Valor total del inventory")
+        print("5. Valor total del inventario")
         print("6. Salir")
         print('-----------------------------------------------')
         opcion = input('Elige lo que deseas realizar: ')
         print('-----------------------------------------------')
         if opcion == '1':
             agregar_producto()
-            print('-----------------------------------------------')
-            print("PRODUCTO AGREGADO")
         elif opcion == '2':
-            print('-----------------------------------------------')
-            print("inventory")
             consultar_productos()
         elif opcion == '3':
             actualizar_precios()
-            print('-----------------------------------------------')
-            print("PRECIO ACTUALIZADO")
         elif opcion == '4':
             eliminar_productos()
-            print('-----------------------------------------------')
-            print("PRODUCTO ELIMINADO")
         elif opcion == '5':
-            calcular_valor_total_iventario()
+            calcular_valor_total_inventario()
         elif opcion == "6":
+            print("Saliendo del programa...")
             break
         else:
-            print('Numero Invalido')
-        
+            print('Número inválido')
+
 menu_principal()
