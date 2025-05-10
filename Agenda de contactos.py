@@ -69,19 +69,14 @@ while True:
             elimina = input("Ingrese el nombre del contacto que desea eliminar: ").strip().lower()
             if elimina in agent:
                 del agent[elimina]
-                print(f"Contacto '{elimina}' eliminado.")
+                print(f" Contacto '{elimina}' eliminado.")
             else:
-                print("Ese contacto no está en la agenda.")
+                print(" Ese contacto no está en la agenda.")
 
         case "5":
-            print("El programa ha terminado.")
+            print(" El programa ha terminado.")
             break
 
         case _:
-            print("⚠Opción inválida. Intente de nuevo.")
-
-            print("El programa ha terminado")
-            break
-        case _:
-            print("\n Opción invalida")
+            print(" Opción inválida. Intente de nuevo.")
 
